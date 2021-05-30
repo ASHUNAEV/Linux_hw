@@ -64,19 +64,13 @@ usage_space_procent=$(bc <<< "scale=2; ${used_size}/${sum_size}*100")
 while [ -n "$1" ]
   do
     case "$1" in
-      -Kb) kb="$2"
-      echo "Calculations in Kilobytes"
-    shift ;;
-      -Mb) mb="$2"
-       echo "Calculations in Megabytes"
-    shift ;;
-      -Gb) gb="$2"
-      echo "Calculations in Gigabytes"
-    shift ;;
-      *) echo "$1 is no options, go to readme.txt" ;;
+      -Kb) echo "Calculations in Kilobytes" ;; 
+      -Mb) echo "Calculations in Megabytes" ;;
+      -Gb) echo "Calculations in Gigabytes" ;;
+        *) echo "$1 is no options, go to readme.txt" ;;
     esac
     shift
-  done
+done
 
 
 
@@ -97,7 +91,10 @@ elif [ "$1" == "-Gb" ]; then
   echo -e "$Magnet Using sapce of partitions:$used_mb`GB` $Reset"
   echo -e "$Red Partitions space used in procent:$usage_space_procent`%` $Reset"
 else [ "$1" == "-Kb" ]
-  echo "GG"
+ echo -e "$Yellow Available space of partitions:$sum_available $Reset"
+ echo -e "$Green Size sapce of partitions:$sum_size $Reset"
+ echo -e "$Magnet Using sapce of partitions:$used_size $Reset"
+ echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset"
 fi 
 
 
