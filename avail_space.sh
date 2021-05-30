@@ -84,19 +84,19 @@ if [ "$1" == "-Mb" ]; then
   available_mb=$(bc <<< "scale=3; ${sum_available}/1024")
   sum_mb=$(bc <<< "scale=3; ${sum_size}/1024")
   use_mb=$(bc <<< "scale=3; ${used_size}/1024")
-  echo -e "$Yellow Awalibale space partitions:$available_mb Mb $Reset"
-  echo -e "$Green Size space partitions:$sum_mb Mb $Reset"
-  echo -e "$Magnet Using sapce of partitions:$used_mb MB $Reset"
-  echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset"
-elif [ "$1" == "-Gb"]; then
+  echo -e "$Yellow Awalibale space partitions:$available_mb`Mb` $Reset"
+  echo -e "$Green Size space partitions:$sum_mb`Mb` $Reset"
+  echo -e "$Magnet Using sapce of partitions:$used_mb`MB` $Reset"
+  echo -e "$Red Partitions space used in procent:$usage_space_procent`%` $Reset"
+elif [ "$1" == "-Gb" ]; then 
   available_gb=$(bc <<< "scale=3; ${sum_available}/1024/1024")
   sum_gb=$(bc <<< "scale=3; ${sum_size}/1024/1024")
   use_gb=$(bc <<< "scale=3; ${used_size}/1024/1024")
-  echo -e "$Yellow Awalibale space partitions:$available_mb Gb $Reset"
-  echo -e "$Green Size space partitions:$sum_mb Gb $Reset"
-  echo -e "$Magnet Using sapce of partitions:$used_mb GB $Reset"
-  echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset"
-else [ "$1" == "-Kb"]
+  echo -e "$Yellow Awalibale space partitions:$available_mb`Gb` $Reset"
+  echo -e "$Green Size space partitions:$sum_mb`Gb` $Reset"
+  echo -e "$Magnet Using sapce of partitions:$used_mb`GB` $Reset"
+  echo -e "$Red Partitions space used in procent:$usage_space_procent`%` $Reset"
+else [ "$1" == "-Kb" ]
   echo "GG"
 fi 
 
