@@ -11,6 +11,37 @@ Green='\e[0;32m'
 
 declare -i sum_available=0
 
+Function_calculation_Kb()
+{
+        echo -e "$Yellow Available space of partitions:${sum_available} Kb $Reset"
+        echo -e "$Green Size sapce of partitions:${sum_size} Kb $Reset"
+        echo -e "$Magnet Using sapce of partitions:${used_size} Kb $Reset"
+        echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset"
+}
+
+Function_calculation_Mb()
+{
+      available_mb=$(bc <<< "scale=3; ${sum_available}/1024")
+      sum_mb=$(bc <<< "scale=3; ${sum_size}/1024")
+      use_mb=$(bc <<< "scale=3; ${used_size}/1024")
+        echo -e "$Yellow Awalibale space partitions:${available_mb} Mb $Reset"
+        echo -e "$Green Size space partitions:${sum_mb} Mb $Reset"
+        echo -e "$Magnet Using sapce of partitions:${use_mb} Mb $Reset"
+        echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset"
+        
+}
+
+Function_calculation_Gb()
+{
+      available_gb=$(bc <<< "scale=3; ${sum_available}/1024/1024")
+      sum_gb=$(bc <<< "scale=3; ${sum_size}/1024/1024")
+      use_gb=$(bc <<< "scale=3; ${used_size}/1024/1024")
+        echo -e "$Yellow Awalibale space partitions:${available_gb} Gb $Reset"
+        echo -e "$Green Size space partitions:${sum_gb} Gb $Reset"
+        echo -e "$Magnet Using sapce of partitions:${use_gb} GB $Reset"
+        echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset"
+}
+
 #-------------------------main----------------------
 available_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' ' -f4)
 size_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' ' -f2)
@@ -61,12 +92,17 @@ usage_space_procent=$(bc <<< "scale=2; ${used_size}/${sum_size}*100")
 
 #------------------------Keys-----------------------
 
+
+
 while [ -n "$1" ]
   do
     case "$1" in
-      -Kb) echo "Calculations in Kilobytes" ;; 
-      -Mb) echo "Calculations in Megabytes" ;;
-      -Gb) echo "Calculations in Gigabytes" ;;
+      -Kb) echo "Calculations in Kilobytes" 
+            Function_calculation_Kb;;
+      -Mb) echo "Calculations in Megabytes" 
+            Function_calculation_Mb ;;
+      -Gb) echo "Calculations in Gigabytes" 
+            Function_calculation_Gb;;
         *) echo "$1 is no options, go to readme.txt" ;;
     esac
     shift
@@ -74,28 +110,17 @@ done
 
 
 
-if [ "$1" == "-Mb" ]; then
-  available_mb=$(bc <<< "scale=3; ${sum_available}/1024")
-  sum_mb=$(bc <<< "scale=3; ${sum_size}/1024")
-  use_mb=$(bc <<< "scale=3; ${used_size}/1024")
-  echo -e "$Yellow Awalibale space partitions:$available_mb`Mb` $Reset"
-  echo -e "$Green Size space partitions:$sum_mb`Mb` $Reset"
-  echo -e "$Magnet Using sapce of partitions:$use_mb`MB` $Reset"
-  echo -e "$Red Partitions space used in procent:$usage_space_procent`%` $Reset"
-elif [ "$1" == "-Gb" ]; then 
-  available_gb=$(bc <<< "scale=3; ${sum_available}/1024/1024")
-  sum_gb=$(bc <<< "scale=3; ${sum_size}/1024/1024")
-  use_gb=$(bc <<< "scale=3; ${used_size}/1024/1024")
-  echo -e "$Yellow Awalibale space partitions:$available_gb`Gb` $Reset"
-  echo -e "$Green Size space partitions:$sum_gb`Gb` $Reset"
-  echo -e "$Magnet Using sapce of partitions:$use_gb`GB` $Reset"
-  echo -e "$Red Partitions space used in procent:$usage_space_procent`%` $Reset"
-else [ "$1" == "-Kb" ]
- echo -e "$Yellow Available space of partitions:$sum_available $Reset"
- echo -e "$Green Size sapce of partitions:$sum_size $Reset"
- echo -e "$Magnet Using sapce of partitions:$used_size $Reset"
- echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset"
-fi 
+#if [ "$1" == "-Mb" ]; then
+ 
+#fi
+
+#exit
+
+#elif [ "$1" == "-Gb" ]; then 
+  
+#else [ "$1" == "-Kb" ]
+ 
+#fi 
 
 
 
