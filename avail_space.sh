@@ -10,6 +10,7 @@ Green='\e[0;32m'
 
 declare -i sum_available=0
 
+#---------------------------Function-----------------------
 Function_calculation_size()
 {
   Coef1=$1
@@ -25,6 +26,155 @@ Function_calculation_size()
     echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset"
     
 }
+
+#------------------------Keys-----------------------
+#----Если переданы пустые значения, считается в килобайтах.
+if [[ $1 == '' ]]; 
+  then
+    echo "Calculations in Kilobytes"
+    Calculations_in_Kilobytes='1024 1024 Kb'
+    Coef='^/'
+fi
+
+while [ -n "$1" ];
+  do
+    case "$1" in
+      -a) echo "Search in tmp folder"
+          Coef='tmp' ;;
+      -b) echo "Search in phys folder"
+          Coef='^/' ;;
+      -k) echo "Calculations in Kilobytes" 
+            Calculations_in_Kilobytes='1024 1024 kb' ;;
+            # Function_calculation_size 1024 1024 Kb ;;
+      -m) echo "Calculations in Megabytes" 
+            Calculations_in_Megabytes='1 1024 Mb' ;;
+            # Function_calculation_size 1 1024 Mb ;;
+      -g) echo "Calculations in Gigabytes" 
+            Calculations_in_Gigabytes='1 1 Gb' ;;
+            # Function_calculation_size 1 1 Gb ;;
+      *) echo "$1 is no options, go to readme.txt" ;;
+    esac
+    shift
+done
+
+#-------------------------main----------------------  
+     
+     available_space_array=$(df | grep $Coef | tr -s ' ' | cut -d ' ' -f4)
+     size_space_array=$(df | grep $Coef | tr -s ' ' | cut -d ' ' -f2)
+     used_space_array=$(df | grep $Coef | tr -s ' ' | cut -d ' ' -f3)
+
+#-------------------------Available sapce----------------------
+
+array=($available_space_array)
+for i in ${array[@]};
+  do
+    let "sum_available+=i"
+  done
+
+#-------------------------Size of all aprtitions-----------------------
+
+array=($size_space_array)
+for i in ${array[@]};
+  do
+    let "sum_size+=i"
+  done
+
+#--------------------------Used spice of partitions--------------
+
+array=($used_space_array)
+for i in ${array[@]};
+  do
+    let "used_size+=i"
+  done
+
+#-----------------------Usage % for all partitions------------------
+
+usage_space_procent=$(bc <<< "scale=2; ${used_size}/${sum_size}*100")
+
+
+#----------------------Function with parametrs---------------
+
+if [[ $Calculations_in_Kilobytes != '' ]];
+  then
+    Function_calculation_size $Calculations_in_Kilobytes
+
+elif [[ $Calculations_in_Megabytes != '' ]];
+  then
+    Function_calculation_size $Calculations_in_Megabytes
+
+elif [[ $Calculations_in_Gigabytes != '' ]];
+  then
+    Function_calculation_size $Calculations_in_Gigabytes
+else
+  echo "Please run script with two keys!"
+
+fi
+
+
+
+exit
+
+
+
+
+
+
+
+
+# if [[ $Calculations_in_Kilobytes != '' ]];
+#   then
+#     Function_calculation_size $Calculations_in_Kilobytes
+
+# fi
+
+# if [[ $Calculations_in_Megabytes != '' ]];
+#   then
+#     Function_calculation_size $Calculations_in_Megabytes
+
+# fi
+
+# if [[ $Calculations_in_Gigabytes != '' ]];
+#   then
+#     Function_calculation_size $Calculations_in_Gigabytes
+
+# fi
+exit
+
+
+
+# 
+#_________________________________________________old________________
+
+# echo -e "$Yellow Available space of partitions:$sum_available $Reset"
+
+# echo -e "$Green Size sapce of partitions:$sum_size $Reset"
+
+# echo -e "$Magnet Using sapce of partitions:$used_size $Reset"
+
+#echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset" 
+
+#  t) echo "Search in temp" 
+      #       #Function_search_folder tmp ;;
+      #       Coef='tmp' 
+      #       echo "-----$Coef";;
+      #  p) echo "Search in /dev" 
+      #       #Function_search_folder ^/ ;;
+      #       Coef='^/' ;;
+
+# available_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' ' -f4)
+# size_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' ' -f2)
+# used_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' ' -f3)
+
+
+
+#use_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' %' -f5 | tr -d '%')
+
+
+if [[ $1 == '' ]]; 
+  then
+    echo "Calculations in Kilobytes"
+    Function_calculation_size 1024 1024 Kb
+fi
 
 
 # Function_search_folder()
@@ -74,115 +224,6 @@ Function_calculation_size()
 #     esac
 #     shift
 # done
-
-while [ -n "$1" ];
-  do
-    case "$1" in
-      #  t) echo "Search in temp" 
-      #       #Function_search_folder tmp ;;
-      #       Coef='tmp' 
-      #       echo "-----$Coef";;
-      #  p) echo "Search in /dev" 
-      #       #Function_search_folder ^/ ;;
-      #       Coef='^/' ;;
-      -a) echo "Search in tmp folder"
-          Coef='tmp' ;;
-      -b) echo "Search in phys folder"
-          Coef='^/' ;;
-
-      -k) echo "Calculations in Kilobytes" 
-            Calculations_in_Kilobytes='1024 1024 kb' ;;
-            #Function_calculation_size 1024 1024 Kb ;;
-      -m) echo "Calculations in Megabytes" 
-            Calculations_in_Megabytes='1 1024 Mb' ;;
-            #Function_calculation_size 1 1024 Mb ;;
-      -g) echo "Calculations in Gigabytes" 
-            Calculations_in_Gigabytes='1 1 Gb' ;;
-            #Function_calculation_size 1 1 Gb ;;
-      *) echo "$1 is no options, go to readme.txt" ;;
-    esac
-    shift
-done
-
-
-#-------------------------main----------------------  
-     
-     
-     
-     
-     
-     
-     available_space_array=$(df | grep $Coef | tr -s ' ' | cut -d ' ' -f4)
-     size_space_array=$(df | grep $Coef | tr -s ' ' | cut -d ' ' -f2)
-     used_space_array=$(df | grep $Coef | tr -s ' ' | cut -d ' ' -f3)
-
-# available_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' ' -f4)
-# size_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' ' -f2)
-# used_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' ' -f3)
-
-
-
-#use_space_array=$(df | grep ^/ | tr -s ' ' | cut -d ' %' -f5 | tr -d '%')
-
-#-------------------------Available sapce----------------------
-array=($available_space_array)
-for i in ${array[@]};
-  do
-    let "sum_available+=i"
-  done
-
-
-# echo -e "$Yellow Available space of partitions:$sum_available $Reset"
-
-#-------------------------Size of all aprtitions-----------------------
-array=($size_space_array)
-for i in ${array[@]};
-  do
-    let "sum_size+=i"
-  done
-
-# echo -e "$Green Size sapce of partitions:$sum_size $Reset"
-
-#--------------------------Used spice of partitions--------------
-
-array=($used_space_array)
-for i in ${array[@]};
-  do
-    let "used_size+=i"
-  done
-
-# echo -e "$Magnet Using sapce of partitions:$used_size $Reset"
-
-#-----------------------Usage % for all partitions------------------
-
-usage_space_procent=$(bc <<< "scale=2; ${used_size}/${sum_size}*100")
-
-#echo -e "$Red Partitions space used in procent:$usage_space_procent% $Reset" 
-
-#------------------------Keys-----------------------
-
-# if [[ $1 == '' ]]; 
-#   then
-#     echo "Calculations in Kilobytes"
-#     Function_calculation_size 1024 1024 Kb
-# fi
-
-echo "$Calculations_in_Kilobytes"
-echo "$Calculations_in_Megabytes "
-echo "$Calculations_in_Gigabytes"
-
-
-
-if [[ $Calculations_in_Kilobytes != '' ]];
-  then
-    Function_calculation_size $Calculations_in_Kilobytes
-
-fi
-
-exit
-# 
-#_________________________________________________old________________
-
 # while [ -n "$2" ]
 #   do
 #     case "$2" in
